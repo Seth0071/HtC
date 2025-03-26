@@ -1,13 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <style>
-      body {
-        background-color: White;
-      }
-    </style>
-  </head>
   <body>
-    
+    <h3>HTC - HackTheCrap</h3>
   </body>
 </html>
