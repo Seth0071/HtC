@@ -1,4 +1,4 @@
-#_HtC - Hack the Crap_
+# _HtC - Hack the Crap_
 Hack the Crap - a website for Crackers, Nerds and Coders who want to expand their knowledge!
 
 _Links for Documentation and similar stuff:_
