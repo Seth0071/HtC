@@ -3,7 +3,7 @@
   <head>
     <style>
       body {
-        background-color: #FFFFFF;
+        background-color: White;
       }
     </style>
   </head>
