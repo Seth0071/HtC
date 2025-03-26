@@ -2,6 +2,8 @@
 Hack the Crap - a website for Crackers, Nerds and Coders who want to expand their knowledge!
 
 _Links for Documentation and similar stuff:_
+Documentation Online: https://example.com
+Documentation Download: https://example.com
 
 
 
