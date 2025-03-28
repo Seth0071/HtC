@@ -1,11 +1,57 @@
 body {
-  background-image: url(code_1.jpg)
+  background-color: Black;
 }
 
 h1 {
-    font-family: 'Montserrat';font-size: 35px;
+    font-family: 'Montserrat';
+    font-size: 35px;
     text-align: center;
-    padding: 170px 0;
-    text-shadow: 4px 4px rgb(6, 255, 89), 8px 7px #155fff, 0px 0px 10px black;
+    text-shadow: 2px 2px rgb(6, 255, 89), 4px 4px #155fff, 0px 0px 10px black;
     color:red;
 }
+
+h2 {
+    font-family: 'Montserrat';
+    text-align: center;
+    color:rgb(255, 255, 255);
+}
+
+h3 {
+  font-family: 'Montserrat';
+  text-align: center;
+  color:rgb(255, 255, 255);
+}
+
+h4 {
+  font-family: 'Montserrat';
+  text-align: center;
+  color:rgb(255, 255, 255);
+}
+
+h5 {
+  font-family: 'Montserrat';
+  text-align: center;
+  color:rgb(255, 255, 255);
+}
+
+p {
+  font-family: 'Montserrat';
+  color:rgb(255, 255, 255);
+}
+
+header {
+  background-color: Black;
+  position: sticky;
+  left: 0;
+  width: 100%;
+  top: 0;
+}
+
+div.header1 {
+  background-image: url('image_code.png');
+  position: absolute;
+
+  left: 0;
+  width: 100%;
+}
+
