@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+    <link rel="stylesheet" href="style.css">
+    <head>
+        <title>HACK THE CRAP</title>
+    </head>
+    <body>
+      <script>
+        function call_elements() {
+            for (let abc = 0; abc < 1000; abc++)  {
+              let button_element = document.createElement("button");
+              button_element.innerText = "Test";
+              document.body.appendChild(button_element);
+            }
+        }
+      </script>
+      <button style="" onclick="call_elements()">Click to load challenge</button>
+    </body>
+    </html>
