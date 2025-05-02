@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Restricted Access</title>
+  <style>
+    body {
+      background-color: black;
+      color: lime;
+      font-family: monospace;
+      text-align: center;
+      margin-top: 100px;
+    }
+    button {
+      padding: 10px;
+      background: black;
+      border: 1px solid lime;
+      color: lime;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔒 Zugriff verweigert</h1>
+  <p>Nur wer weiß, wie man die Regeln bricht, bekommt Zugang...</p>
+  <button onclick="enter()">Zugang versuchen</button>
+  <p id="output"></p>
+
+  <script>
+    const securityObject = {
+      hasAccess: false
+    };
+
+    Object.freeze(securityObject); // extra Hürde, muss umgangen werden
+
+    function enter() {
+      const out = document.getElementById("output");
+      if (securityObject.hasAccess === true) {
+        out.innerText = "✅ Zugriff gewährt! Willkommen, Hacker.";
+        out.style.color = "lime";
+      } else {
+        out.innerText = "❌ Zugriff verweigert!";
+        out.style.color = "red";
+      }
+    }
+
+    console.log("%c💡 Tipp: Manchmal muss man die Regeln (Objekte) neu schreiben, um ans Ziel zu kommen.", "color: orange; font-weight: bold;");
+    console.log("%c🔍 Aber Vorsicht... Object.freeze schützt vor Manipulation!", "color: cyan;");
+
+    // Bonus: Gib dem User Zugriff auf eval(), aber versteckt
+    Object.defineProperty(window, "_", {
+      get() {
+        console.log("🧠 Du hast was gefunden. Versuche z.B. `eval('securityObject.hasAccess = true')`");
+        return () => {};
+      }
+    });
+  </script>
+</body>
+</html>

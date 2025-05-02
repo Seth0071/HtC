@@ -1,0 +1,175 @@
+/* Allgemeine Reset-Eigenschaften */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; /* Schriftart für den Body */
+}
+
+/* Stil für h1 */
+h1 {
+    font-family: 'Montserrat', sans-serif; /* Sicherstellen, dass Montserrat verfügbar ist */
+    font-size: 35px;
+    text-align: center;
+    padding: 170px 0;
+    text-shadow: 4px 4px rgb(6, 255, 89), 8px 7px #155fff, 0px 0px 10px black;
+    color: red;
+}
+
+/* Stil für Bilder */
+img {
+    padding: 0;
+    display: block;
+    margin: 0 auto;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+
+
+.line {
+    width: 30px;
+    height: 4px;
+    background-color: white;
+    border-radius: 2px;
+}
+
+
+
+/* Theme Switcher */
+.theme-switch {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.theme-switch-slider {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.theme-switch-slider::before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+
+
+/* Beschriftung der Theme-Switcher-Schaltfläche */
+.theme-switch-labels {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.theme-switch-labels span {
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+#theme-checkbox:checked + .theme-switch-labels span:first-child {
+    display: none;
+}
+
+#theme-checkbox:not(:checked) + .theme-switch-labels span:last-child {
+    display: none;
+}
+
+/* Dark Mode Styles */
+.dark-mode {
+    background-color: #000000;
+    color: #fff;
+    nav 
+}
+
+.dark-mode .theme-switch-slider::before {
+    transform: translateX(26px);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    height: 100%;
+    margin: 0;
+}
+
+/* Basic Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+nav {
+    background-color: #000000;
+}
+
+.navbar {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+    padding: 15px;
+}
+
+.navbar li {
+    position: relative;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+}
+
+.navbar a:hover {
+    background-color: #000000;
+}
+
+/* Dropdown styles */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #000000;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    padding: 12px 16px;
+}
+
+.dropdown-content a:hover {
+    background-color: #000000;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: #000000;
+}

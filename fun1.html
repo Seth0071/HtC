@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login</title>
+  <style>
+    body {
+      background-color: black;
+      color: lime;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    input, button {
+      margin: 10px;
+      background-color: black;
+      color: lime;
+      border: 1px solid lime;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Admin Login</h1>
+  <input id="codeInput" type="password" placeholder="Enter Admin Code">
+  <button onclick="checkCode()">Login</button>
+  <p id="message"></p>
+
+  <script>
+
+    const encrypted = [82, 111, 111, 116, 65, 99, 99, 101, 115, 115, 52, 50];
+
+    function getSecretCode() {
+      return encrypted.map(c => String.fromCharCode(c)).join('');
+    }
+
+
+    function checkCode() {
+      const input = document.getElementById("codeInput").value;
+      const msg = document.getElementById("message");
+      if (input === getSecretCode()) {
+        msg.innerText = "✅ Zugriff gewährt!";
+        msg.style.color = "lime";
+      } else {
+        msg.innerText = "❌ Falscher Code!";
+        msg.style.color = "red";
+      }
+    }
+  </script>
+</body>
+</html>
