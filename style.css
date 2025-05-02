@@ -9,17 +9,16 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif; /* Schriftart für den Body */
+    font-family: 'Monospace', sans-serif; /* Schriftart für den Body */
 }
 
 /* Stil für h1 */
 h1 {
-    font-family: 'Montserrat', sans-serif; /* Sicherstellen, dass Montserrat verfügbar ist */
+    font-family: 'Monospace', sans-serif; /* Sicherstellen, dass Montserrat verfügbar ist */
     font-size: 35px;
     text-align: center;
     padding: 170px 0;
-    text-shadow: 4px 4px rgb(6, 255, 89), 8px 7px #155fff, 0px 0px 10px black;
-    color: red;
+    color: black;
 }
 
 /* Stil für Bilder */
@@ -106,7 +105,7 @@ img {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Monospace', sans-serif;
     height: 100%;
     margin: 0;
 }
@@ -119,7 +118,7 @@ body {
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Monospace', sans-serif;
 }
 
 nav {
