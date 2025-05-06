@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Server @ 127.0.0.1</title>
+<style>
+  /* Grundstil für Body und Übergänge */
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    color: #000;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* Navbar Styling */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 0.5em 1em;
+  }
+
+  nav h1 {
+    color: #fff;
+    margin: 0;
+    font-size: 1.2em;
+  }
+
+  /* Mode Toggle Button */
+  .mode-toggle {
+    background: none;
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 0.3em 0.6em;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  /* Container für den Server und Shell */
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  /* Für den Light-Mode */
+body.light-mode .shell_input {
+  background-color: White;
+  border: 0px solid rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+  width: 50%;
+  height: 40%;
+  padding: 4px; /* kleineres Padding für oben links, angepasst */
+  box-sizing: border-box;
+  text-align: left; /* horizontal ausrichten */
+  font-family: monospace;
+  font-size: 1em;
+}
+
+/* Für den Dark-Mode */
+body.dark-mode .shell_input {
+  background-color: #000000;
+  border: 0px solid Black;
+  color: #0f0;
+  width: 50%;
+  height: 40%;
+  padding: 4px;
+  box-sizing: border-box;
+  text-align: left;
+  font-family: monospace;
+  font-size: 1em;
+}
+
+/* Shell Bereich */
+.shell {
+  width: 80%;
+  max-width: 800px;
+  height: 300px;
+  background-color: #000;
+  color: #0f0;
+  font-family: monospace;
+  padding: 10px;
+  border-radius: 8px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Light Mode Styles */
+body.light-mode {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+body.light-mode ::placeholder {
+  color: rgb(0, 0, 0);
+  display: block;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+
+/* Dark Mode Styles */
+body.dark-mode {
+  background-color: #121212;
+  color: #fff;
+}
+
+body.dark-mode ::placeholder {
+  color: #0f0;
+  display: block;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+  opacity: 0.6;
+}
+</style>
+</head>
+<body class="light-mode">
+  <!-- Navbar -->
+  <nav>
+    <button class="mode-toggle" id="modeToggle">Dark Mode</button>
+  </nav>
+
+  <!-- Hauptcontainer -->
+  <div class="container">
+    <!-- Input Feld -->
+    <input class="shell_input" id="shell_input" type="text" placeholder="SHELL > Input..." />
+  </div>
+
+  <script>
+    // Willkommensmeldung
+    window.alert("Welcome to the 5th and final HtC challange. Your goal is to protect an infected Server with the shell input. You can use both the default and the website shell.")
+  
+    // Mode Umschaltung
+    const toggleButton = document.getElementById('modeToggle');
+    const body = document.body;
+  
+    toggleButton.addEventListener('click', () => {
+      if (body.classList.contains('light-mode')) {
+        body.classList.remove('light-mode');
+        body.classList.add('dark-mode');
+        toggleButton.textContent = 'Light Mode';
+      } else {
+        body.classList.remove('dark-mode');
+        body.classList.add('light-mode');
+        toggleButton.textContent = 'Dark Mode';
+      }
+    });
+
+    // Optional: Cursor beim Laden oben links positionieren
+    const inputField = document.getElementById('shell_input');
+    inputField.focus();
+  </script>
+</body>
+</html>
