@@ -8,10 +8,18 @@
   /* Grundstil für Body und Übergänge */
   body {
     margin: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace; /* Use a monospaced font for a terminal feel */
     background-color: #f0f0f0;
     color: #000;
     transition: background-color 0.3s, color 0.3s;
+    padding-top: 0; /* Remove top padding, handled by main-wrapper */
+    overflow-y: auto; /* Allow body to scroll if content is too long */
+  }
+
+  /* Dark Mode Body Background */
+  body.dark-mode {
+    background-color: #121212; /* Dark background for dark mode */
+    color: #eee;
   }
 
   /* Navbar Styling */
@@ -19,14 +27,24 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
-    padding: 0.5em 1em;
+    background-color: #222; /* Darker navbar */
+    padding: 0.8em 1.5em; /* More padding */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3); /* Add a subtle shadow */
+    width: 100%; /* Make navbar full width */
+    box-sizing: border-box; /* Include padding in width */
+  }
+
+  /* Dark Mode Navbar */
+  body.dark-mode nav {
+    background-color: #1e1e1e;
+    box-shadow: 0 2px 5px rgba(0,255,0,0.1);
   }
 
   nav h1 {
     color: #fff;
     margin: 0;
-    font-size: 1.2em;
+    font-size: 1.4em; /* Slightly larger title */
+    letter-spacing: 1px; /* Add some letter spacing */
   }
 
   /* Mode Toggle Button */
@@ -34,117 +52,443 @@
     background: none;
     border: 2px solid #fff;
     color: #fff;
-    padding: 0.3em 0.6em;
+    padding: 0.5em 1em; /* More padding */
     cursor: pointer;
-    border-radius: 4px;
-    font-size: 0.9em;
+    border-radius: 25px; /* Pill shape button */
+    font-size: 1em;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
   }
 
-  /* Container für den Server und Shell */
-  .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
+  .mode-toggle:hover {
+    background-color: #fff;
+    color: #333;
+    border-color: #fff;
   }
 
-  /* Für den Light-Mode */
-body.light-mode .shell_input {
-  background-color: White;
-  border: 0px solid rgb(255, 255, 255);
-  color: rgb(0, 0, 0);
-  width: 50%;
-  height: 40%;
-  padding: 4px; /* kleineres Padding für oben links, angepasst */
-  box-sizing: border-box;
-  text-align: left; /* horizontal ausrichten */
-  font-family: monospace;
-  font-size: 1em;
-}
+  /* Dark Mode Toggle Button */
+  body.dark-mode .mode-toggle {
+    border-color: #0f0;
+    color: #0f0;
+  }
 
-/* Für den Dark-Mode */
-body.dark-mode .shell_input {
-  background-color: #000000;
-  border: 0px solid Black;
-  color: #0f0;
-  width: 50%;
-  height: 40%;
-  padding: 4px;
-  box-sizing: border-box;
-  text-align: left;
-  font-family: monospace;
-  font-size: 1em;
-}
+  body.dark-mode .mode-toggle:hover {
+    background-color: #0f0;
+    color: #121212;
+    border-color: #0f0;
+  }
 
-/* Shell Bereich */
-.shell {
-  width: 80%;
-  max-width: 800px;
-  height: 300px;
-  background-color: #000;
-  color: #0f0;
-  font-family: monospace;
-  padding: 10px;
-  border-radius: 8px;
-  overflow-y: auto;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
+  /* New Wrapper Box for Main Content and Windows */
+  .main-wrapper {
+      width: 95%; /* Set a width for the wrapper */
+      margin: 20px auto; /* Center the wrapper and add vertical margin */
+      padding: 20px; /* Add padding inside the wrapper */
+      background-color: #fff; /* Default background */
+      border: 1px solid #ccc; /* Default border */
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+      transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
 
-/* Light Mode Styles */
-body.light-mode {
-  background-color: #f0f0f0;
-  color: #000;
-}
+  body.dark-mode .main-wrapper {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    box-shadow: 0 4px 8px rgba(0,255,0,0.1);
+  }
 
-body.light-mode ::placeholder {
-  color: rgb(0, 0, 0);
-  display: block;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 0.9em;
-  transition: all 0.2s ease;
-  opacity: 0.6;
-}
 
-/* Dark Mode Styles */
-body.dark-mode {
-  background-color: #121212;
-  color: #fff;
-}
+  /* Container for the main content (shell, history, CPU graph) - Now inside main-wrapper */
+  .main-content {
+    float: left; /* Float the main content to the left */
+    width: 65%; /* Adjust width to make space for floating windows */
+    padding-right: 20px; /* Add some space between main content and windows */
+    box-sizing: border-box;
+  }
 
-body.dark-mode ::placeholder {
-  color: #0f0;
-  display: block;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  font-size: 0.9em;
-  transition: all 0.2s ease;
-  opacity: 0.6;
-}
+  /* Container for the floating windows - Now inside main-wrapper */
+  .window-container {
+    float: right; /* Float the windows container to the right */
+    width: 30%; /* Adjust width for the windows */
+    box-sizing: border-box;
+    /* padding-top: 30px; Removed this, alignment is now handled by the wrapper's padding */
+  }
+
+  /* Clearfix to prevent content from wrapping under floats - Applied to main-wrapper */
+  .main-wrapper::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+
+
+  /* Input Field Styling */
+  .shell_input {
+    width: 100%; /* Take full width of the main-content div */
+    height: 50px; /* Taller input field */
+    padding: 15px; /* More padding */
+    box-sizing: border-box;
+    font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1.1em; /* Larger font */
+    margin-bottom: 25px; /* Add more space */
+    border-radius: 8px; /* Rounded corners */
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  /* Light Mode Input Styles */
+  body.light-mode .shell_input {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    color: #000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  }
+
+  /* Dark Mode Input Styles */
+  body.dark-mode .shell_input {
+    background-color: #0a0a0a; /* Very dark background */
+    border: 1px solid #444;
+    color: #0f0; /* Green text */
+    box-shadow: 0 2px 5px rgba(0,255,0,0.1); /* Green shadow for dark mode */
+  }
+
+  .shell_input:focus {
+    outline: none; /* Remove default outline */
+    border-color: #007bff; /* Highlight border on focus */
+    box-shadow: 0 0 8px rgba(0,123,255,0.5); /* Add a blue glow on focus */
+  }
+
+  body.dark-mode .shell_input:focus {
+    border-color: #0f0; /* Green highlight border */
+    box-shadow: 0 0 8px rgba(0,255,0,0.5); /* Green glow on focus */
+  }
+
+  /* Shell Area - Keeping the existing shell style */
+  .shell {
+    width: 100%;
+    height: 300px;
+    background-color: #000;
+    color: #0f0;
+    font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+    padding: 10px;
+    border-radius: 8px;
+    overflow-y: auto;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  }
+
+  /* Command History Box Styling */
+  .command-history {
+    width: 100%; /* Take full width of the main-content div */
+    height: 250px; /* Taller history box */
+    border-radius: 8px;
+    padding: 15px;
+    overflow-y: auto;
+    font-family: 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 1em;
+    margin-top: 25px; /* More space above */
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+
+  /* Light Mode History Styles */
+  body.light-mode .command-history {
+    background-color: #e9e9e9; /* Slightly darker background */
+    border: 1px solid #bbb;
+    color: #333;
+  }
+
+  /* Dark Mode History Styles */
+  body.dark-mode .command-history {
+    background-color: #1a1a1a; /* Darker background */
+    border: 1px solid #333;
+    color: #eee;
+    box-shadow: 0 2px 5px rgba(0,255,0,0.1); /* Green shadow */
+  }
+
+  /* Styling for individual commands in history */
+  .command-history p {
+    margin: 0 0 8px 0; /* More space between commands */
+    word-wrap: break-word; /* Wrap long commands */
+    line-height: 1.5; /* Increase line height */
+  }
+
+  .command-history p::before {
+    content: '> '; /* Add a consistent prompt */
+    color: #007bff; /* Blue prompt in light mode */
+  }
+
+  body.dark-mode .command-history p::before {
+    color: #0f0; /* Green prompt in dark mode */
+  }
+
+  /* CPU Power Graph Container */
+  .cpu-graph-container {
+    margin-top: 30px; /* Space above the graph */
+    width: 100%; /* Take full width of the main-content div */
+    background-color: #fff; /* Default background */
+    border: 1px solid #ccc; /* Default border */
+    border-radius: 8px;
+    padding: 15px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+
+  body.dark-mode .cpu-graph-container {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    box-shadow: 0 4px 8px rgba(0,255,0,0.1);
+  }
+
+  .cpu-graph-container h3 {
+    margin-top: 0;
+    color: #333; /* Default text color */
+    transition: color 0.3s;
+  }
+
+  body.dark-mode .cpu-graph-container h3 {
+    color: #eee; /* Dark mode text color */
+  }
+
+  /* CPU Diagram Area */
+  .cpu-diagram {
+      width: 100%;
+      height: 100px; /* Set a height for the diagram */
+      border: 1px solid #ccc; /* Border for the diagram area */
+      position: relative; /* Needed for absolute positioning of bars */
+      overflow: hidden; /* Hide bars that go beyond the container */
+      box-sizing: border-box;
+      background-color: #f9f9f9; /* Light background for diagram */
+  }
+
+  body.dark-mode .cpu-diagram {
+    border-color: #555;
+    background-color: #2a2a2a; /* Darker background for diagram */
+  }
+
+  /* Individual CPU Bars (representing each data point) */
+  .cpu-bar {
+      position: absolute;
+      bottom: 0; /* Align to the bottom */
+      width: 2px; /* Width of each bar */
+      background-color: #007bff; /* Blue color for bars */
+      /* No height transition here, as height changes instantly */
+  }
+
+  body.dark-mode .cpu-bar {
+    background-color: #0f0; /* Green color for bars in dark mode */
+  }
+
+  /* Placeholder Styles - Adjusted for new padding */
+  .shell_input::placeholder {
+    color: rgb(0, 0, 0);
+    position: absolute;
+    top: 15px; /* Adjust placeholder position */
+    left: 15px; /* Adjust placeholder position */
+    font-size: 1em; /* Match input font size */
+    transition: all 0.2s ease;
+    opacity: 0.6;
+  }
+
+  body.dark-mode .shell_input::placeholder {
+    color: #0f0;
+  }
+
+  .shell_input:focus::placeholder {
+      opacity: 0; /* Hide placeholder on focus */
+  }
+
+  /* Window Styling */
+  .window {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 20px; /* Add space between windows */
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: 100%; /* Take full width of the window-container */
+      box-sizing: border-box;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+
+  body.dark-mode .window {
+    background-color: #1a1a1a;
+    border: 1px solid #333;
+    color: #eee;
+    box-shadow: 0 2px 5px rgba(0,255,0,0.1);
+  }
+
+  .window h4 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: #333;
+      transition: color 0.3s;
+  }
+
+  body.dark-mode .window h4 {
+    color: #eee;
+  }
+
+  .window p {
+      margin: 5px 0;
+      font-size: 0.9em;
+  }
+
+  .error-message {
+      color: #dc3545; /* Red for errors */
+      font-weight: bold;
+  }
+
+  body.dark-mode .error-message {
+    color: #ff6347; /* Tomato red for errors in dark mode */
+  }
+
+  /* Make the error window scrollable */
+  #errorWindow .window-content {
+      max-height: 200px; /* Set a max height for the error messages area */
+      overflow-y: auto; /* Add scrollbar if content exceeds max height */
+  }
+
+  /* Hex Viewer Window Content */
+  #hexViewerWindow .window-content {
+      max-height: 300px; /* Set a max height for the hex code area */
+      overflow-y: auto; /* Add scrollbar if content exceeds max height */
+      font-size: 0.85em; /* Slightly smaller font for hex */
+      white-space: pre-wrap; /* Preserve line breaks and spaces */
+      word-break: break-all; /* Break long lines */
+  }
+
+  /* Overlay for the end game message */
+  .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000; /* Make sure it's on top of everything */
+      visibility: hidden; /* Start hidden */
+      opacity: 0;
+      transition: visibility 0s, opacity 0.5s linear;
+  }
+
+  .overlay.visible {
+      visibility: visible;
+      opacity: 1;
+  }
+
+  .end-message {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      color: #000;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  .end-message h2 {
+      margin-top: 0;
+      color: #dc3545; /* Red for failure */
+  }
+
+  .end-message p {
+      font-size: 1.1em;
+      margin-bottom: 20px;
+  }
+
+  .end-message button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s ease;
+  }
+
+  .end-message button:hover {
+      background-color: #0056b3;
+  }
+
 </style>
 </head>
 <body class="light-mode">
   <!-- Navbar -->
   <nav>
+    <h1>Server @ 127.0.0.1</h1>
     <button class="mode-toggle" id="modeToggle">Dark Mode</button>
   </nav>
 
-  <!-- Hauptcontainer -->
-  <div class="container">
-    <!-- Input Feld -->
-    <input class="shell_input" id="shell_input" type="text" placeholder="SHELL > Input..." />
+  <!-- New Wrapper Box for Main Content and Windows -->
+  <div class="main-wrapper">
+    <!-- Main Content Area (floated left) -->
+    <div class="main-content">
+      <!-- Input Feld -->
+      <input class="shell_input" id="shell_input" type="text" placeholder="SHELL > Input..." />
+
+      <!-- Command History Box -->
+      <div class="command-history" id="commandHistory">
+        <!-- Commands will be added here -->
+      </div>
+
+      <!-- CPU Power Graph Container -->
+      <div class="cpu-graph-container">
+          <h3>CPU Usage (%)</h3>
+          <div class="cpu-diagram" id="cpuDiagram">
+              <!-- CPU bars will be added here by JavaScript -->
+          </div>
+      </div>
+    </div>
+
+    <!-- Window Container Area (floated right) -->
+    <div class="window-container">
+      <!-- Simulated Server Info Window -->
+      <div class="window" id="serverInfoWindow">
+          <h4>Server Status</h4>
+          <p>CPU Load: <span id="currentCpuLoad">0%</span></p>
+          <p>Memory Usage: 45%</p>
+          <p>Disk Activity: Low</p>
+      </div>
+
+      <!-- Simulated Hex Viewer Window -->
+      <div class="window" id="hexViewerWindow">
+          <h4>Hex Viewer</h4>
+          <div id="hexContent" class="window-content">
+              <p>Use 'view [filename]' to see hex content.</p>
+          </div>
+      </div>
+
+      <!-- Simulated Error Window -->
+      <div class="window" id="errorWindow">
+          <h4>System Errors</h4>
+          <div id="errorMessages" class="window-content">
+              <!-- Error messages will appear here -->
+          </div>
+      </div>
+    </div>
   </div>
 
+  <!-- Overlay for End Game Message -->
+  <div class="overlay" id="endGameOverlay">
+      <div class="end-message">
+          <h2 id="endGameTitle">Challenge Failed!</h2>
+          <p id="endGameText">The server's CPU usage reached 100%. The malware has taken over.</p>
+          <button onclick="location.reload()">Restart Challenge</button>
+      </div>
+  </div>
+
+
   <script>
-    // Willkommensmeldung
-    window.alert("Welcome to the 5th and final HtC challange. Your goal is to protect an infected Server with the shell input. You can use both the default and the website shell.")
-  
-    // Mode Umschaltung
+    // Welcome message
+    window.alert("Welcome to the 5th and final HtC challange. Your goal is to delete the malware to secure the server. You can use both the default and the website shell. The admin directory is hidden.");
+
+    // Mode Toggle
     const toggleButton = document.getElementById('modeToggle');
     const body = document.body;
-  
+
     toggleButton.addEventListener('click', () => {
       if (body.classList.contains('light-mode')) {
         body.classList.remove('light-mode');
@@ -157,9 +501,673 @@ body.dark-mode ::placeholder {
       }
     });
 
-    // Optional: Cursor beim Laden oben links positionieren
+    // Get references to the input, history, and CPU diagram elements
     const inputField = document.getElementById('shell_input');
+    const commandHistory = document.getElementById('commandHistory');
+    const cpuDiagram = document.getElementById('cpuDiagram');
+    const currentCpuLoadSpan = document.getElementById('currentCpuLoad');
+    const errorMessagesDiv = document.getElementById('errorMessages');
+    const endGameOverlay = document.getElementById('endGameOverlay');
+    const hexContentDiv = document.getElementById('hexContent'); // Get the hex content div
+
+    // Array to store CPU usage data points
+    let cpuData = [];
+    const maxDataPoints = 100; // Number of bars in the diagram
+    const baseCpu = 30; // Minimum CPU usage percentage
+    const randomFluctuation = 5; // Maximum random increase/decrease
+    const powerIncreasePerCommand = 15; // Instant increase from a command
+    let linearIncreaseRate = 0.2; // Increased rate: How much the baseline increases per second (adjust as needed)
+    let currentLinearIncrease = 0; // Tracks the total linear increase
+
+    const errorThreshold = 60; // Lowered threshold: CPU usage percentage to start showing errors
+    const errorFrequency = 2000; // Increased frequency: How often to potentially show an error (milliseconds)
+    const errorMessages = [
+        "ERROR: File system corruption detected.",
+        "WARNING: High network traffic from unknown source.",
+        "ALERT: Unauthorized access attempt blocked.",
+        "CRITICAL: Process 'malware.exe' consuming excessive resources.",
+        "ERROR: System logs are being tampered with.",
+        "WARNING: Unusual CPU activity detected.",
+        "ALERT: Security patch installation failed.",
+        "CRITICAL: Data exfiltration suspected."
+    ];
+    let lastErrorTime = 0; // To track when the last error occurred
+
+    let gameEnded = false; // Flag to track if the game has ended
+    let cpuInterval; // Variable to store the interval ID for CPU updates
+
+    // --- Challenge Specific Variables ---
+    // Standardized: All directory keys end with a backslash
+    let currentDirectory = "C:\\"; // Starting directory
+    const fileSystem = { // Simple representation of the file system
+        "C:\\": ["System", "Users", "Program Files", "malware.exe", ".hidden_config"],
+        "C:\\System\\": ["config.sys", "important_data.txt"],
+        "C:\\Users\\": ["Guest"],
+        "C:\\Users\\Guest\\": ["readme.txt"],
+        "C:\\Program Files\\": [],
+        "C:\\.hidden_config\\": ["access_key.txt"] // Hidden directory key
+    };
+    let crackInstalled = false; // Flag to track if 'crack' is installed
+    let hiddenDirCracked = false; // Flag to track if the hidden directory has been cracked
+    let malwareDeleted = false; // Flag to track if malware is deleted
+
+    // Optional: Cursor beim Laden oben links positionieren
     inputField.focus();
+
+    // Function to generate simulated hex code
+    function generateHexContent(filename, lines = 50) {
+        let hex = '';
+        const charsPerLine = 16; // Standard hex dump format
+        const offsetPad = 8; // For the address offset
+
+        for (let i = 0; i < lines; i++) {
+            const offset = (i * charsPerLine).toString(16).padStart(offsetPad, '0');
+            let hexBytes = '';
+            let ascii = '';
+
+            for (let j = 0; j < charsPerLine; j++) {
+                // Generate random hex bytes (00 to FF)
+                const byte = Math.floor(Math.random() * 256);
+                hexBytes += byte.toString(16).padStart(2, '0') + ' ';
+
+                // Simulate ASCII representation (printable chars or '.')
+                ascii += byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : '.';
+            }
+            hex += `${offset}  ${hexBytes.trim()}  |${ascii}|\n`;
+        }
+        return hex;
+    }
+
+
+    // Function to update the CPU diagram
+    function updateCpuDiagram() {
+        // Remove old bars if we exceed the max data points
+        while (cpuData.length > maxDataPoints) {
+            cpuData.shift(); // Remove the oldest data point from the beginning
+        }
+
+        // Clear the current diagram HTML
+        cpuDiagram.innerHTML = '';
+
+        // Calculate the width of each bar based on the container width and number of data points
+        const barWidth = cpuDiagram.offsetWidth / maxDataPoints;
+
+        let latestCpuUsage = 0; // To store the latest CPU value for the end game check
+
+        // Add new bars to the diagram based on the cpuData array
+        cpuData.forEach((power, index) => {
+            const barElement = document.createElement('div');
+            barElement.classList.add('cpu-bar');
+            barElement.style.height = `${power}%`; // Set height based on power percentage
+            barElement.style.left = `${index * barWidth}px`; // Position the bar horizontally
+            barElement.style.width = `${barWidth}px`; // Set the bar width
+
+            // Optional: Change color based on power level
+            if (power >= 95) { // Higher threshold for red due to baseline
+                barElement.style.backgroundColor = '#dc3545'; // Red
+            } else if (power > 75) { // Adjusted yellow threshold
+                barElement.style.backgroundColor = '#ffc107'; // Yellow
+            } else {
+                // Use the CSS defined color for green/default
+            }
+
+            cpuDiagram.appendChild(barElement);
+
+            // Get the latest CPU usage value
+            if (index === cpuData.length - 1) {
+                latestCpuUsage = power;
+            }
+        });
+
+        // Update the current CPU load text
+        if (cpuData.length > 0) {
+            currentCpuLoadSpan.textContent = `${Math.round(cpuData[cpuData.length - 1])}%`;
+        }
+
+        // Check for end game condition AFTER updating the diagram
+        if (latestCpuUsage >= 100 && !gameEnded) {
+            endGame(false); // Pass false for failure
+        }
+    }
+
+    // Function to generate a new CPU data point
+    function generateCpuDataPoint() {
+        // Start with the base CPU and add the linear increase
+        let currentCpu = baseCpu + currentLinearIncrease;
+
+        // Add random fluctuation
+        currentCpu += (Math.random() * randomFluctuation * 2) - randomFluctuation;
+
+        // Ensure the value is between 0 and 100
+        if (currentCpu < 0) currentCpu = 0;
+        if (currentCpu > 100) currentCpu = 100; // Cap at 100%
+
+        return currentCpu;
+    }
+
+    // Function to update CPU power and add new data points
+    function updateCpuPower() {
+        if (gameEnded) return; // Stop updating if the game has ended
+
+        // Add a new data point to the array
+        const newCpuValue = generateCpuDataPoint();
+        cpuData.push(newCpuValue);
+
+        // Apply linear increase for the next interval
+        currentLinearIncrease += linearIncreaseRate;
+
+        updateCpuDiagram(); // Update the visual diagram
+        checkAndShowError(newCpuValue); // Check for errors based on CPU usage
+    }
+
+    // Function to check CPU usage and potentially show an error
+    function checkAndShowError(currentCpuUsage) {
+        if (gameEnded) return; // Stop showing errors if the game has ended
+
+        const now = Date.now();
+        // Check if CPU usage is above the threshold and enough time has passed since the last error
+        // Increased probability: Math.random() < 0.7 (70% chance)
+        if (currentCpuUsage > errorThreshold && (now - lastErrorTime > errorFrequency) && Math.random() < 0.7) {
+            const randomError = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+            displayErrorMessage(randomError);
+            lastErrorTime = now; // Update the last error time
+        }
+    }
+
+    // Function to display a message in the history box
+    function displayMessage(message, isError = false) {
+        const messageElement = document.createElement('p');
+        if (isError) {
+            messageElement.classList.add('error-message');
+        }
+        messageElement.textContent = message;
+        commandHistory.appendChild(messageElement);
+        commandHistory.scrollTop = commandHistory.scrollHeight; // Scroll to bottom
+    }
+
+    // Function to display an error message in the error window
+    function displayErrorMessage(message) {
+        const errorElement = document.createElement('p');
+        errorElement.classList.add('error-message');
+        errorElement.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+        errorMessagesDiv.appendChild(errorElement);
+
+        // Optional: Limit the number of error messages
+        if (errorMessagesDiv.children.length > 15) { // Increased limit slightly
+            errorMessagesDiv.removeChild(errorMessagesDiv.firstElementChild);
+        }
+
+        // Scroll to the bottom of the error window
+        errorMessagesDiv.scrollTop = errorMessagesDiv.scrollHeight;
+    }
+
+    // Function to end the game
+    function endGame(success) {
+        gameEnded = true; // Set the game ended flag
+        clearInterval(cpuInterval); // Stop the CPU update interval
+
+        // Disable input field
+        inputField.disabled = true;
+        inputField.style.cursor = "not-allowed";
+
+        const endGameTitle = document.getElementById('endGameTitle');
+        const endGameText = document.getElementById('endGameText');
+
+        if (success) {
+            endGameTitle.textContent = "Challenge Successful!";
+            endGameTitle.style.color = "#28a745"; // Green for success
+            endGameText.textContent = "You successfully deleted the malware and secured the server!";
+            inputField.value = "Challenge Successful!";
+            inputField.style.borderColor = "#28a745"; // Green border
+        } else {
+            endGameTitle.textContent = "Challenge Failed!";
+            endGameTitle.style.color = "#dc3545"; // Red for failure
+            endGameText.textContent = "The server's CPU usage reached 100%. The malware has taken over.";
+            inputField.value = "Server Overloaded - Challenge Failed!";
+            inputField.style.borderColor = "#dc3545"; // Red border
+        }
+
+
+        // Show the end game overlay
+        endGameOverlay.classList.add('visible');
+    }
+
+
+    // Function to handle command processing
+    function processCommand(command) {
+        const parts = command.toLowerCase().trim().split(/\s+/); // Split by one or more spaces
+        const cmd = parts[0];
+        const arg = parts.slice(1).join(' '); // Join remaining parts as argument
+
+        // Add an instant spike to the *last* data point for almost all commands
+        // Commands generally increase CPU load, even if they don't solve the problem.
+        // Deleting malware is the exception, but the spike happens before deletion is confirmed.
+         if (cmd !== 'clear' && !gameEnded) { // Don't spike for 'clear' or if game ended
+             if (cpuData.length > 0) {
+                 cpuData[cpuData.length - 1] += powerIncreasePerCommand;
+                 // Ensure it doesn't exceed 100%
+                 if (cpuData[cpuData.length - 1] > 100) {
+                     cpuData[cpuData.length - 1] = 100;
+                 }
+             } else {
+                  let initialCpu = baseCpu + currentLinearIncrease + powerIncreasePerCommand;
+                  if (initialCpu > 100) initialCpu = 100;
+                  cpuData.push(initialCpu);
+             }
+             updateCpuDiagram(); // Update diagram after spike
+         }
+
+
+        switch (cmd) {
+            case 'cd':
+                handleCdCommand(arg);
+                break;
+            case 'ls':
+            case 'dir': // Add dir as an alias for ls
+                handleLsCommand();
+                break;
+            case 'help':
+                displayMessage("Available commands: cd, ls/dir, help, view, delete, clear, winget");
+                if (crackInstalled) {
+                    displayMessage("Additional command available: crack");
+                }
+                break;
+            case 'view':
+                handleViewCommand(arg);
+                break;
+            case 'delete':
+                handleDeleteCommand(arg);
+                break;
+            case 'clear':
+                commandHistory.innerHTML = ''; // Clear the history
+                break;
+            case 'winget':
+                 handleWingetCommand(arg);
+                 break;
+            case 'crack':
+                 if (crackInstalled) {
+                     handleCrackCommand(arg);
+                 } else {
+                     displayMessage("Command 'crack' not found. Try installing it via 'winget'.", true);
+                 }
+                 break;
+            default:
+                displayMessage(`Unknown command: ${command}`, true);
+        }
+    }
+
+      // Handle 'cd' command
+    function handleCdCommand(directory) {
+        console.log(`cd command received. Argument: "${directory}"`); // Debug: Log the received argument
+
+        if (!directory) {
+            displayMessage(`Current directory: ${currentDirectory}`);
+            console.log(`cd: No argument provided. Displaying current directory.`); // Debug: Log no argument
+            return;
+        }
+
+        // Handle going up one directory
+        if (directory === '..') {
+            console.log(`cd: Handling '..' command.`); // Debug: Log '..' command
+             // Cannot go up from the root C:\
+            if (currentDirectory === "C:\\") {
+                displayMessage("Cannot go above root directory.", true);
+                console.log(`cd: Already at root C:\\. Cannot go up.`); // Debug: Cannot go up from root
+            } else {
+                // Split the path by backslash
+                const pathParts = currentDirectory.split('\\');
+                console.log(`cd: Current path parts (before pop): ${pathParts}`); // Debug: Path parts before pop
+
+                // Remove the last part (the current directory name)
+                pathParts.pop(); // Remove the directory name
+                console.log(`cd: Path parts after first pop (directory name): ${pathParts}`); // Debug: Path parts after first pop
+                pathParts.pop(); // Remove the trailing backslash from the previous directory
+                 console.log(`cd: Path parts after second pop (trailing backslash): ${pathParts}`); // Debug: Path parts after second pop
+
+                // Rejoin the parts and add the trailing backslash for the parent directory
+                currentDirectory = pathParts.join('\\') + '\\';
+
+                // Special case for going from C:\System\ to C:\
+                if (currentDirectory === "C:\\") {
+                     currentDirectory = "C:\\"; // Ensure it's exactly "C:\"
+                } else if (currentDirectory === "") {
+                     // This case handles going up from something like "C:\Users\"
+                     currentDirectory = "C:\\";
+                }
+
+                displayMessage(`Changed directory to: ${currentDirectory}`);
+                console.log(`cd: Changed directory to: ${currentDirectory}`); // Debug: Log new directory
+            }
+            return;
+        }
+
+        // Construct the potential new path
+        // Ensure currentDirectory ends with a backslash before appending
+        let newPath = currentDirectory;
+        if (!newPath.endsWith('\\')) {
+             newPath += '\\';
+        }
+        newPath += directory + '\\'; // Append the new directory and its trailing backslash
+
+        // Normalize path (handle multiple backslashes, etc.)
+        newPath = newPath.replace(/\\+/g, '\\');
+        console.log(`cd: Constructed potential new path: "${newPath}"`); // Debug: Log constructed new path
+
+        // --- FIX: Convert newPath to lowercase for case-insensitive comparison ---
+        const lowerCaseNewPath = newPath.toLowerCase();
+        // --- End Fix ---
+
+
+        // Check if the directory exists in our simulated file system
+        // Check if the key exists AND if its value is an array (representing directory contents)
+        // --- FIX: Check against the lowercase keys of fileSystem ---
+        const fileSystemKeysLower = Object.keys(fileSystem).map(key => key.toLowerCase());
+        const existsInFileSystem = fileSystemKeysLower.includes(lowerCaseNewPath);
+        let isDirectory = false;
+
+        if (existsInFileSystem) {
+             // Find the original key in fileSystem that matches the lowercase path
+             const originalKey = Object.keys(fileSystem).find(key => key.toLowerCase() === lowerCaseNewPath);
+             isDirectory = Array.isArray(fileSystem[originalKey]);
+        }
+        // --- End Fix ---
+
+
+        console.log(`cd: Checking fileSystem for key "${newPath}" (case-insensitive check for "${lowerCaseNewPath}"). Exists: ${existsInFileSystem}, Is Array: ${isDirectory}`); // Debug: Log file system check
+
+        if (existsInFileSystem && isDirectory) {
+            // --- FIX: Update currentDirectory using the ORIGINAL key from fileSystem ---
+            const originalKey = Object.keys(fileSystem).find(key => key.toLowerCase() === lowerCaseNewPath);
+            currentDirectory = originalKey;
+            // --- End Fix ---
+
+            displayMessage(`Changed directory to: ${currentDirectory}`);
+            console.log(`cd: Directory found and is a directory. Updated currentDirectory.`); // Debug: Log successful change
+        } else {
+            displayMessage(`Directory not found: ${directory}`, true);
+            console.log(`cd: Directory not found or is not a directory.`); // Debug: Log directory not found
+        }
+    }
+    // Handle 'ls' or 'dir' command
+    function handleLsCommand() {
+        const contents = fileSystem[currentDirectory];
+        if (contents) {
+            displayMessage(`Contents of ${currentDirectory}:`);
+            // Filter out hidden directories unless it has been cracked
+            const displayContents = contents.filter(item => {
+                 // Show hidden dir if it's the current dir or if it has been cracked
+                 // Or if it's a regular item (doesn't start with .)
+                 return !item.startsWith('.') || (item === ".hidden_config" && hiddenDirCracked) || !item.startsWith('.');
+            });
+
+
+            if (displayContents.length > 0) {
+                displayContents.forEach(item => {
+                    // Construct the full path to the item to check if it's a directory
+                    let itemPath = currentDirectory;
+                     if (!itemPath.endsWith('\\')) {
+                         itemPath += '\\';
+                     }
+                     itemPath += item + '\\'; // Append item and potential backslash
+
+                    // Check if the itemPath exists as a key in fileSystem AND its value is an array
+                    const isDirectory = fileSystem.hasOwnProperty(itemPath) && Array.isArray(fileSystem[itemPath]);
+
+                    displayMessage(item + (isDirectory ? '/' : '')); // Add a slash for directories
+                });
+            } else {
+                 displayMessage(`Directory is empty: ${currentDirectory}`);
+            }
+        } else {
+             // Should not happen if fileSystem is correctly structured, but as a fallback
+            displayMessage(`Error listing directory: ${currentDirectory}`, true);
+        }
+    }
+
+    // Handle 'winget' command
+    function handleWingetCommand(arg) {
+        if (!arg) {
+            displayMessage("Usage: winget install [package]", true);
+            return;
+        }
+
+        const parts = arg.split(/\s+/);
+        const action = parts[0];
+        const packageName = parts.slice(1).join(' ').toLowerCase();
+
+        if (action === 'install') {
+            if (packageName === 'cracktool') {
+                if (!crackInstalled) {
+                    displayMessage("Searching for 'cracktool'...");
+                    displayMessage("Found 'cracktool'. Installing...");
+                    // Simulate installation time
+                    setTimeout(() => {
+                        if (!gameEnded) {
+                             displayMessage("'crack' command installed successfully.");
+                             crackInstalled = true;
+                        }
+                    }, 3000); // 3 seconds installation time
+                } else {
+                    displayMessage("'cracktool' is already installed.");
+                }
+            } else {
+                 displayMessage(`Package '${packageName}' not found in winget repository.`, true);
+            }
+        } else {
+            displayMessage(`Unknown winget action: ${action}. Usage: winget install [package]`, true);
+        }
+    }
+
+
+    // Handle 'crack' command
+    function handleCrackCommand(target) {
+        if (!target) {
+             displayMessage("Usage: crack [directory]", true);
+             return;
+        }
+
+        const lowerTarget = target.toLowerCase();
+
+        // Construct the full path to the target directory
+        let targetPath = currentDirectory;
+        if (!targetPath.endsWith('\\')) {
+            targetPath += '\\';
+        }
+        targetPath += target;
+        targetPath = targetPath.replace(/\\+/g, '\\'); // Normalize path
+
+        // Add trailing backslash for directory check
+        if (!targetPath.endsWith('\\')) {
+            targetPath += '\\';
+        }
+
+
+        if (targetPath === "C:\\.hidden_config\\") { // Match the key format
+            if (!hiddenDirCracked) {
+                displayMessage(`Attempting to crack directory: ${targetPath}...`);
+
+                // Simulate cracking time with a delay and CPU spike
+                const crackingTime = 8000; // 8 seconds - longer cracking time
+
+                // Add a temporary CPU spike - already handled by the general command processing
+
+
+                setTimeout(() => {
+                    if (!gameEnded) { // Check if the game hasn't ended during cracking
+                        displayMessage("Cracking successful! The hidden directory 'C:\\.hidden_config' is now accessible.");
+                        // Mark the hidden directory as cracked
+                        hiddenDirCracked = true;
+                        // Optional: Reduce CPU load slightly after successful crack?
+                        // currentLinearIncrease -= 5; // Example reduction
+                    }
+                }, crackingTime);
+            } else {
+                 displayMessage(`Directory ${targetPath} is already cracked.`);
+            }
+
+        } else {
+             displayMessage(`Cannot crack target: ${target}. You can only crack the hidden malware directory.`, true);
+        }
+    }
+
+    // Handle 'view' command
+    function handleViewCommand(filename) {
+        if (!filename) {
+            displayMessage("Usage: view [filename]", true);
+            hexContentDiv.innerHTML = "<p>Use 'view [filename]' to see hex content.</p>"; // Clear hex viewer
+            return;
+        }
+
+        const contents = fileSystem[currentDirectory];
+        const lowerFilename = filename.toLowerCase();
+
+        if (contents) {
+            const fileExists = contents.some(item => item.toLowerCase() === lowerFilename);
+
+            if (fileExists) {
+                // Construct the full path to the file
+                let filePath = currentDirectory;
+                 if (!filePath.endsWith('\\')) {
+                     filePath += '\\';
+                 }
+                 filePath += filename;
+                filePath = filePath.replace(/\\+/g, '\\'); // Normalize path
+
+
+                // Simulate file content based on filename and directory
+                if (currentDirectory === "C:\\.hidden_config\\" && lowerFilename === "access_key.txt") { // Match directory key format
+                    displayMessage("Contents of access_key.txt:");
+                    displayMessage("Key Fragment 1: MALWARE_LOCATION=C:\\");
+                    displayMessage("Key Fragment 2: DELETE_COMMAND=delete");
+                    displayMessage("Key Fragment 3: FILENAME=malware.exe");
+                    displayMessage("Assemble the full command from these fragments.");
+                    // Display simulated hex for access_key.txt
+                    hexContentDiv.textContent = generateHexContent(filename, 10); // Fewer lines for a config file
+                } else if (currentDirectory === "C:\\" && lowerFilename === "malware.exe") {
+                    displayMessage("Contents of malware.exe (binary data):");
+                    displayMessage("[Executable code... This is the source of the high CPU load.]");
+                    displayMessage("You need to delete this file to stop the malware, but you might need special access or information to do it effectively.");
+                     // Display simulated hex for malware.exe
+                    hexContentDiv.textContent = generateHexContent(filename, 50); // Max lines for an executable
+                } else if (lowerFilename === "config.sys" && currentDirectory === "C:\\System\\") { // Match directory key format
+                    displayMessage("Contents of config.sys:");
+                    displayMessage("[System configuration file... Contains system settings but no direct clues.]");
+                    // Display simulated hex for config.sys
+                    hexContentDiv.textContent = generateHexContent(filename, 20); // Moderate lines
+                } else if (lowerFilename === "important_data.txt" && currentDirectory === "C:\\System\\") { // Match directory key format
+                    displayMessage("Contents of important_data.txt:");
+                    displayMessage("Notes about server maintenance. Mentions a hidden configuration (.hidden_config) directory for sensitive settings, but doesn't say how to access it.");
+                    // Display simulated hex for important_data.txt
+                    hexContentDiv.textContent = generateHexContent(filename, 15); // Moderate lines
+                } else if (lowerFilename === "readme.txt" && currentDirectory === "C:\\Users\\Guest\\") { // Match directory key format
+                     displayMessage("Contents of readme.txt:");
+                     displayMessage("Welcome Guest! If you need to install system tools, try using 'winget install'. The 'cracktool' package might be useful for security tasks.");
+                     // Display simulated hex for readme.txt
+                     hexContentDiv.textContent = generateHexContent(filename, 8); // Fewer lines
+                }
+                else {
+                    displayMessage(`Cannot view content of ${filename}.`);
+                    hexContentDiv.innerHTML = `<p>Cannot view content of ${filename}.</p>`; // Clear hex viewer or show message
+                }
+            } else {
+                displayMessage(`File not found: ${filename}`, true);
+                 hexContentDiv.innerHTML = `<p>File not found: ${filename}</p>`; // Clear hex viewer or show message
+            }
+        } else {
+             // Should not happen if fileSystem is correctly structured
+            displayMessage(`Error accessing directory contents: ${currentDirectory}`, true);
+            hexContentDiv.innerHTML = "<p>Error accessing directory.</p>"; // Clear hex viewer or show message
+        }
+    }
+
+     // Handle 'delete' command
+     function handleDeleteCommand(filename) {
+         if (!filename) {
+             displayMessage("Usage: delete [filename]", true);
+             return;
+         }
+
+         const contents = fileSystem[currentDirectory];
+         const lowerFilename = filename.toLowerCase();
+
+         if (contents) {
+             const fileIndex = contents.findIndex(item => item.toLowerCase() === lowerFilename);
+
+             if (fileIndex > -1) {
+                 // Check if it's the malware in the correct location
+                 if (lowerFilename === "malware.exe" && currentDirectory === "C:\\") {
+                     // Check if the hidden directory has been cracked (simulating needing the "key")
+                     if (hiddenDirCracked) { // Changed from hiddenDirAccessed to hiddenDirCracked
+                          displayMessage("Executing delete on malware.exe...");
+                          contents.splice(fileIndex, 1); // Remove malware from the file system list
+                          displayMessage("malware.exe deleted successfully. Server secured!");
+                          malwareDeleted = true; // Set malware deleted flag
+                          endGame(true); // Win condition met
+                     } else {
+                         displayMessage("Access denied. You need the correct authorization to delete this file. The key is in the hidden configuration directory, but it needs to be cracked first.", true);
+                     }
+                 } else {
+                     // Simulate deleting other files (doesn't affect the game state)
+                     displayMessage(`Deleted ${filename}.`);
+                     contents.splice(fileIndex, 1); // Remove from the file system list
+                 }
+             } else {
+                 displayMessage(`File not found: ${filename}`, true);
+             }
+         } else {
+              // Should not happen if fileSystem is correctly structured
+             displayMessage(`Error accessing directory contents: ${currentDirectory}`, true);
+         }
+     }
+
+
+    // Function to handle the Enter key press and process the command
+    function handleEnterKey(event) {
+      if (gameEnded) return; // Don't process input if game ended
+
+      // Check if the pressed key is Enter (key code 13)
+      if (event.key === 'Enter') {
+        // Prevent the default form submission behavior
+        event.preventDefault();
+
+        // Get the value from the input field
+        const command = inputField.value.trim();
+
+        // Check if the command is not empty before processing
+        if (command !== '') {
+          // Add the command to the history box
+          const commandElement = document.createElement('p');
+          commandElement.textContent = `${currentDirectory}> ${command}`; // Include the prompt in history
+          commandHistory.appendChild(commandElement);
+          commandHistory.scrollTop = commandHistory.scrollHeight;
+
+          // Process the command
+          processCommand(command);
+
+          // Clear the input field after processing
+          inputField.value = '';
+        }
+      }
+    }
+
+    // Add an event listener to the input field to listen for keydown events
+    inputField.addEventListener('keydown', handleEnterKey);
+
+    // Set an interval to update CPU power and the diagram every second
+    cpuInterval = setInterval(updateCpuPower, 1000); // Store the interval ID
+
+    // Initial updates to populate the graph
+    // We need to generate enough initial data points to fill the graph
+    for (let i = 0; i < maxDataPoints; i++) {
+        cpuData.push(generateCpuDataPoint());
+    }
+    updateCpuDiagram();
+
+    // Initial welcome message in the history
+    displayMessage("Type 'help' for a list of commands.");
+    displayMessage(`Current directory: ${currentDirectory}`);
+    hexContentDiv.innerHTML = "<p>Use 'view [filename]' to see hex content.</p>"; // Initialize hex viewer
+
   </script>
 </body>
 </html>
