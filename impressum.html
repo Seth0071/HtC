@@ -1,19 +1,308 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-<title> Impressum </title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HACK THE CRAP</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  /* Grundlegendes Layout & Schriftarten */
+  body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  /* Header mit Theme Switch */
+  header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #1e3d59;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  /* Theme Switch Styling */
+  .theme-switch {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  /* Switch Input */
+  #theme-checkbox {
+    display: none;
+  }
+
+  /* Slider für Theme Switch */
+  .theme-switch-slider {
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 25px;
+    position: relative;
+    transition: background-color 0.3s;
+  }
+
+  /* Schieber (Knob) */
+  #theme-checkbox:checked + label .theme-switch-slider {
+    background-color: #4CAF50;
+  }
+
+  #theme-checkbox:checked + label .knob {
+    transform: translateX(25px);
+  }
+
+  /* Knob selber */
+  .knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 21px;
+    height: 21px;
+    background-color: white;
+    border-radius: 50%;
+    transition: transform 0.3s;
+  }
+
+  /* Labels "Light" & "Dark" */
+  .theme-switch-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100px;
+    margin-left: 10px;
+    font-size: 0.9em;
+  }
+
+  /* Navigation Styling */
+  nav {
+    background-color: #333;
+    padding: 10px 20px;
+  }
+
+  .navbar {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .navbar li {
+    position: relative;
+    margin-right: 20px;
+  }
+
+  .navbar a {
+    color: #fff;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background 0.3s;
+  }
+
+  .navbar a:hover {
+    background-color: #555;
+  }
+
+  /* Dropdown Menü */
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 160px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    top: 100%;
+    left: 0;
+    z-index: 1001;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+  .dropdown-content a {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f4f4f4;
+  }
+
+  /* Hauptüberschrift */
+  h1 {
+    text-align: center;
+    margin: 40px 20px;
+    font-size: 2.5em;
+    color: #2c3e50;
+  }
+
+  /* Impressum & Inhalt */
+  .impressum {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  /* Überschrift in Impressum */
+  .impressum h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #34495e;
+  }
+
+  /* Sektionen */
+  .section {
+    margin-top: 30px;
+  }
+
+  .section h6 {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #2c3e50;
+  }
+
+  p {
+    margin: 5px 0;
+  }
+
+  /* Boxen für Adresse & Kontakt */
+  .info-box {
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  /* Textfarbe in Boxen (Standard) */
+  .info-box p,
+  .info-box h6 {
+    color: #333;
+  }
+
+  /* Links in Boxen */
+  .info-box a {
+    color: #2980b9;
+  }
+
+  /* Dunkelmodus Styling (optional) */
+  body.dark-mode {
+    background-color: #222;
+    color: #eee; /* Allgemeiner Text im Dark Mode */
+  }
+
+  body.dark-mode nav {
+    background-color: #111;
+  }
+
+  body.dark-mode .navbar a {
+    color: #66ccff; /* Helles Blau für Navigation im Dark Mode */
+  }
+
+  body.dark-mode .impressum {
+    background-color: #333;
+    color: #fff; /* Weißer Text im Dark Mode */
+  }
+
+  body.dark-mode h1,
+  body.dark-mode h6 {
+    color: #ffffff; /* Helle Überschriften im Dark Mode */
+  }
+
+  body.dark-mode p {
+    color: #ccc; /* Hellgrauer Text im Dark Mode */
+  }
+
+  body.dark-mode a {
+    color: #4fc3f7; /* Helle Links im Dark Mode */
+  }
+
+  /* Spezifisch für die Boxen im Dark Mode: Textfarbe auf hell setzen */
+  body.dark-mode .info-box p,
+  body.dark-mode .info-box h6 {
+    color: #000000;
+  }
+</style>
 </head>
 <body>
 
-<h1> Impressum </h1>
-<h6> Leander Steffan, Marienschule GmbH </h6>
-<p> Basingstoker Ring 3 </p>
-<p> 53879 Euskirchen </p>
-<p> Germany </p>
+<!-- Header mit Theme Switch -->
+<header>
+  <div class="theme-switch" id="theme-switch">
+    <input type="checkbox" id="theme-checkbox" />
+    <label for="theme-checkbox" style="display: flex; align-items: center;">
+      <div class="theme-switch-slider">
+        <div class="knob"></div>
+      </div>
+      <div class="theme-switch-labels">
+        <span>Light</span>
+        <span>Dark</span>
+      </div>
+    </label>
+  </div>
+</header>
 
-<h6> Kontakt </h6>
-<p> Telefon: +49 02251 148630 </p>
-<p> Email: seketariat@mse.euskirchen.de </p>
-<p> Internet: htc.com </p>
+<!-- Navigation -->
+<nav>
+  <ul class="navbar">
+    <li><a href="file:///C:/Users/3270/HTC/htc_challange1.html">Home</a></li>
+    <li><a href="#">About</a></li>
+    <li class="dropdown">
+      <a href="#" class="dropbtn">Help</a>
+      <div class="dropdown-content">
+        <a href="#">Solutions</a>
+        <a href="#">Help</a>
+        <a href="#">Impressum</a>
+      </div>
+    </li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Hauptüberschrift -->
+<h1>HACK THE CRAP</h1>
+
+<!-- Impressum -->
+<div class="impressum">
+  <h1>Impressum</h1>
+  <div class="info-box address">
+    <h6>Leander Steffan, Marienschule GmbH</h6>
+    <p>Basingstoker Ring 3</p>
+    <p>53879 Euskirchen</p>
+    <p>Deutschland</p>
+  </div>
+  <div class="info-box contact">
+    <h6>Kontakt</h6>
+    <p>Telefon: +49 02251 148630</p>
+    <p>Email: <a href="mailto:sekretariat@mse.euskirchen.de">sekretariat@mse.euskirchen.de</a></p>
+    <p>Internet: <a href="https://htc.com" target="_blank" rel="noopener noreferrer">htc.com</a></p>
+  </div>
+</div>
+
+<!-- Theme Switch Script -->
+<script>
+  const checkbox = document.getElementById('theme-checkbox');
+  checkbox.addEventListener('change', () => {
+    document.body.classList.toggle('dark-mode', checkbox.checked);
+  });
+</script>
+
 </body>
 </html>
