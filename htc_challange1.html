@@ -1,74 +1,422 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-    <header>
-        <p>wefefefhwwefhwehhwefwhohweökwef</p>
-    </header>
-    <div style="background-color: Black;margin: auto; center; width: 80%;">
-        <h2>
-            Welcome to HTC: Hack The Crap - Console Attack Challenge
-        </h2>
-        <h3>
-            Challenge description
-        </h3>
-    </div class="header1">
-    <article>
-        <p style="background-color: Black;margin: auto; center; width: 80%;">
-Welcome to the Console Attack Challenge hosted on our HTC (Hack The Crap) subdomain! In this challenge, you will put your skills to the test by exploiting a web application vulnerability that allows you to execute console commands and gain unauthorized access to hidden features. This challenge is designed to help you understand command injection attacks, a common vulnerability in web applications.
-Your goal is to use a console attack to access a restricted section of our simple web page. To succeed, you will need to identify the vulnerable input point and execute the appropriate commands to reveal the hidden content.
-        </p>
-        <p style="background-color: Black;margin: auto; center; width: 80%;">
-            <script>
-            let button_wrong = 0;
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HTC Challenge</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet" />
+<!-- Styles -->
+<style>
+    /* Reset und Grundstil */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-            function call_elements() {
-                    let random_num = Math.floor(Math.random() * 1000);
-                    var call_elements_button2 = document.getElementById("call_elements_button");
-                    call_elements_button2.remove();
-                    for (let abc = 0; abc < 1007; abc++)  {
-                      let button_element = document.createElement("button");
-                      button_element.innerText = "Diddy";
-                      button_element.onclick = wrong_button;
-                      document.body.appendChild(button_element);
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f0f0f0; /* Hellgrauer Hintergrund */
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        line-height: 1.4;
+    }
 
-                      if (abc === random_num) {
-                        let button_element2 = document.createElement("button");
-                        button_element2.innerText = "Diddy";
-                        button_element2.style = "background-color: Red;"
-                        button_element2.onclick = wrong_button2;
-                        document.body.appendChild(button_element2);
-                      }
-                    }
+    /* Header + Navigation */
+    header {
+        position: sticky;
+        top: 0;
+        width: 100%;
+        background-color: #222; /* Dunkler Header */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        z-index: 999;
+    }
 
-                }
+    /* Navigation Menü */
+    nav {
+        display: flex;
+        gap: 15px;
+    }
 
-                function wrong_button() {
-                    if (button_wrong < 5) {
-                        window.alert("Wrong Button.");
-                        button_wrong = button_wrong + 1
-                    } else if (button_wrong > 5) {
-                        window.alert("Wrong Button...");
-                        button_wrong = button_wrong + 1
-                    } else if (button_wrong  5) {
-                        window.alert("Still wrong...");
-                        button_wrong = button_wrong + 1
-                    } else if (button_wrong > 5) {
-                        window.alert("What are you trying to do?");
-                        button_wrong = button_wrong + 1
-                    }
-                }
+    .navbar {
+        list-style: none;
+        display: flex;
+        gap: 15px;
+    }
 
-                function wrong_button2() {
-                    window.alert("Wrong... Do you really think we would make it that obvious?")
-                }
-            </script>
-            <div style="text-align: center;">
-              <button id="call_elements_button" onclick="call_elements()">Click to load challenge</button>
+    .navbar li {
+        position: relative;
+    }
+
+    .navbar a {
+        color: #fff;
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        font-weight: 500;
+    }
+
+    .navbar a:hover {
+        background-color: rgba(255,255,255,0.2);
+    }
+
+    /* Dropdown Menü */
+    .dropdown {
+        position: relative;
+    }
+
+    .dropbtn {
+        cursor: pointer;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #333;
+        min-width: 180px;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        z-index: 1000;
+    }
+
+    .dropdown-content a {
+        display: block;
+        padding: 10px 15px;
+        color: #fff;
+        text-decoration: none;
+        transition: background-color 0.2s;
+    }
+
+    .dropdown-content a:hover {
+        background-color: #555;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    /* Theme Switcher */
+    .theme-switch {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        font-size: 14px;
+        z-index: 1001;
+        background: rgba(0,0,0,0.3);
+        padding: 4px 8px;
+        border-radius: 8px;
+    }
+
+    .theme-switch-slider {
+        position: relative;
+        width: 50px;
+        height: 24px;
+        background-color: #ccc;
+        border-radius: 24px;
+        cursor: pointer;
+        transition: background-color 0.4s;
+        margin-right: 10px;
+    }
+
+    .theme-switch-slider::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        top: 3px;
+        left: 3px;
+        background-color: white;
+        border-radius: 50%;
+        transition: transform 0.4s;
+    }
+
+    #theme-checkbox:checked + .theme-switch-slider {
+        background-color: #555;
+    }
+
+    #theme-checkbox:checked + .theme-switch-slider::before {
+        transform: translateX(26px);
+    }
+
+    /* Labels für Light/Dark */
+    .theme-switch-labels {
+        display: flex;
+        gap: 8px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    /* Hauptinhalt */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Überschriften und Texte */
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 36px;
+    text-align: center;
+    padding: 20px 0;
+    text-shadow: 4px 4px rgb(6, 255, 89), 8px 7px #155fff, 0px 0px 10px black;
+    color: #ff4d4d;
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: 28px;
+    color: #222;
+}
+
+h3 {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 22px;
+    color: #222;
+}
+
+p {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.4;
+    max-width: 800px;
+    text-align: center;
+}
+
+/* Challenge Button (groß, zentriert) */
+#call_elements_button {
+    padding: 12px 24px;
+    font-size: 14px;
+    border: 2px solid #222;
+    border-radius: 8px;
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+    margin: 20px 0;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#call_elements_button:hover {
+    background-color: #1e7e34;
+    transform: scale(1.05);
+}
+
+/* Container für die Challenge-Buttons */
+#challenge-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 20px;
+    padding: 10px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Challenge Buttons (klein, sichtbar, mit Rand) */
+.challenge-button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    font-size: 10px;
+    line-height: 30px;
+    text-align: center;
+    display: inline-block;
+    background-color: #fff; /* sichtbar */
+    border: 1px solid #222; /* Kontrast */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.challenge-button:hover {
+    background-color: #ddd;
+}
+
+/* Zusätzliche Inhalte */
+.content-box {
+    background-color: #fff; /* Heller Hintergrund für Inhalte */
+    padding: 20px;
+    margin-top: 30px;
+    border-radius: 12px;
+    max-width: 800px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Dunkler Modus für bessere Optik */
+body.dark-mode {
+    background-color: #222;
+    color: #eee;
+}
+body.dark-mode header {
+    background-color: #111;
+}
+body.dark-mode .navbar a:hover {
+    background-color: #555;
+}
+body.dark-mode .content-box {
+    background-color: #333;
+    color: #eee;
+}
+</style>
+</head>
+<body>
+<header>
+    <!-- Theme Switcher -->
+    <div class="theme-switch" id="theme-switch">
+        <input type="checkbox" id="theme-checkbox" />
+        <label for="theme-checkbox" style="display: flex; align-items: center;">
+            <div class="theme-switch-slider"></div>
+            <div class="theme-switch-labels">
+                <span>Light</span>
+                <span>Dark</span>
             </div>
-    </article>
-    </body>
+        </label>
+    </div>
+    <!-- Navigation -->
+    <nav>
+        <ul class="navbar">
+            <li><a href="file:///C:/Users/3270/HTC/htc_challange1.html">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropbtn">Help</a>
+                <div class="dropdown-content">
+                    <a href="#">Solutions</a>
+                    <a href="#">Help</a>
+                    <a href="#">Impressum</a>
+                </div>
+            </li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <!-- Header + Begrüßung -->
+    <h1>Welcome to HTC: Hack The Crap - Source Code Challenge</h1>
+    <div class="content-box">
+        <h2>Challenge Beschreibung</h2>
+        <p>Willkommen zur "Hack The Crap" Challenge! Dein Ziel ist es, im Quelltext den einzigen Button zu finden, der die richtige Antwort ausgibt.</p>
+        <p>Durchsuche den Code sorgfältig und identifiziere den Button, der beim Klicken die geheime Nachricht anzeigt. Viel Erfolg beim Suchen!</p>
+        <p>Hinweis: Nicht alle Buttons sind gleich; nur einer führt zum Erfolg.</p>
+    </div>
+    <!-- Challenge Button -->
+    <button id="call_elements_button" onclick="call_elements()">Challenge starten</button>
+    <!-- Container für die Challenge Buttons -->
+    <div id="challenge-buttons-container"></div>
+    <!-- Zusätzlicher Text -->
+</main>
+
+<!-- JavaScript -->
+<script>
+    let button_wrong = 0;
+
+    function call_elements() {
+        // Verstecke den Challenge-Button
+        document.getElementById("call_elements_button").style.display = "none";
+
+        const container = document.getElementById("challenge-buttons-container");
+        container.innerHTML = "";
+
+        const random_num = Math.floor(Math.random() * 1000);
+        const random_num2 = Math.floor(Math.random() * 1000);
+
+        for (let abc = 0; abc < 1007; abc++) {
+            const btn = document.createElement("button");
+            btn.className = "challenge-button";
+
+            if (abc === random_num) {
+                // Falscher Button (rot)
+                btn.style.backgroundColor = "red";
+                btn.onclick = wrong_button2;
+            } else if (abc === random_num2) {
+                // Richtiger Button
+                btn.onclick = right_button;
+            } else {
+                // Normale Buttons
+                btn.onclick = wrong_button;
+            }
+
+            container.appendChild(btn);
+        }
+
+        // Challenge-Start-Button deaktivieren (optional)
+        // document.getElementById("call_elements_button").disabled = true;
+
+        // Optional: Funktion, um den Challenge-Button wieder anzuzeigen, z.B. nach Erfolg
+        // Funktion kannst du aktivieren, indem du sie aufrufst
+        // function resetChallenge() {
+        //     document.getElementById("call_elements_button").style.display = "inline-block";
+        //     document.getElementById("call_elements_button").disabled = false;
+        //     document.getElementById("challenge-buttons-container").innerHTML = "";
+        // }
+    }
+
+    function right_button() {
+        alert("IS7oMB0A7T4XtcaO5P2JO06j26sdEYeR");
+        // Beispiel: Challenge beendet, Button wieder anzeigen
+        // resetChallenge();
+    }
+
+    function wrong_button() {
+        if (button_wrong < 5) {
+            alert("Wrong Button.");
+            button_wrong++;
+        } else if (button_wrong >= 5 && button_wrong < 10) {
+            alert("Still the wrong Button.");
+            button_wrong++;
+        } else if (button_wrong >= 10 && button_wrong < 15) {
+            alert("Still wrong...");
+            button_wrong++;
+        } else {
+            alert("Stop being stoopid.");
+            button_wrong = 0;
+        }
+    }
+
+    function wrong_button2() {
+        alert("Wrong... Do you really think we would make it that obvious?");
+    }
+
+    // Theme Wechsel
+    const themeCheckbox = document.getElementById('theme-checkbox');
+    themeCheckbox.addEventListener('change', () => {
+        if (themeCheckbox.checked) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+    });
+
+    // Funktion zum Zurücksetzen (optional aktivieren)
+    // function resetChallenge() {
+    //     document.getElementById("call_elements_button").style.display = "inline-block";
+    //     document.getElementById("call_elements_button").disabled = false;
+    //     document.getElementById("challenge-buttons-container").innerHTML = "";
+    // }
+</script>
+</body>
 </html>
